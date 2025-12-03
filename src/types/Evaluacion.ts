@@ -1,8 +1,8 @@
-import Tema from "./Tema"
+import Subtema from "./Subtema"
 
 export default interface Evaluacion {
     nota: number
-    tema: Tema
+    subtema: Subtema
     evaluacion: number
     evaluacion_fecha: Date
 }

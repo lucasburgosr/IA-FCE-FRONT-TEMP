@@ -1,9 +1,10 @@
-import Tema from "./Tema"
+import Subtema from "./Subtema"
+
 import Unidad from "./Unidad"
 
 export default interface Pregunta {
     contenido: string
-    tema: Tema
+    subtema: Subtema
     unidad: Unidad
     pregunta_id: number
     created_at: Date

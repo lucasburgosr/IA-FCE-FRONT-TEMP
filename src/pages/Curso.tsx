@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom"
 import Pregunta from "@/types/Pregunta"
 import Evaluacion from "@/types/Evaluacion"
 import Unidad from "@/types/Unidad"
-import Tema from "@/types/Tema"
 
 import {
   Card,
@@ -15,6 +14,7 @@ import {
   CardContent,
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import Subtema from "@/types/Subtema"
 
 export function Curso() {
   const navigate = useNavigate()
@@ -62,7 +62,7 @@ export function Curso() {
     type EntradaUnidad = {
       unidad: Unidad
       count: number
-      subtemas: Map<number, { tema: Tema; count: number }>
+      subtemas: Map<number, { subtema: Subtema; count: number }>
     }
 
     const mapUnidades = new Map<number, EntradaUnidad>()
@@ -79,10 +79,10 @@ export function Curso() {
       }
       entradaU.count++
 
-      const sid = q.tema.tema_id
+      const sid = q.subtema.subtema_id
       let entradaS = entradaU.subtemas.get(sid)
       if (!entradaS) {
-        entradaS = { tema: q.tema, count: 0 }
+        entradaS = { subtema: q.subtema, count: 0 }
         entradaU.subtemas.set(sid, entradaS)
       }
       entradaS.count++
@@ -96,15 +96,15 @@ export function Curso() {
   }, [preguntas])
 
   const agrupadoEvaluaciones = useMemo(() => {
-    const map = new Map<number, { tema: Tema; notas: number[] }>()
+    const map = new Map<number, { subtema: Subtema; notas: number[] }>()
 
     evaluaciones.forEach((ev) => {
-      const sid = ev.tema.tema_id
+      const sid = ev.subtema.subtema_id
       const entrada = map.get(sid)
 
       if (!entrada) {
         map.set(sid, {
-          tema: ev.tema,
+          subtema: ev.subtema,
           notas: [ev.nota],
         })
       } else {
@@ -112,8 +112,8 @@ export function Curso() {
       }
     })
 
-    return Array.from(map.values()).map(({ tema, notas }) => ({
-      tema,
+    return Array.from(map.values()).map(({ subtema, notas }) => ({
+      subtema,
       cantidad: notas.length,
       promedio: (notas.reduce((a, b) => a + b, 0) / notas.length).toFixed(1),
     }))
@@ -155,8 +155,8 @@ export function Curso() {
             <CardContent>
               <p className="mb-2"><span className="font-medium">Total:</span> {count}</p>
               <ul className="list-disc ml-5 space-y-1">
-                {subtemas.map(({ tema, count: ct }) => (
-                  <li key={tema.tema_id}>{tema.nombre}: {ct}</li>
+                {subtemas.map(({ subtema, count: ct }) => (
+                  <li key={subtema.subtema_id}>{subtema.nombre}: {ct}</li>
                 ))}
               </ul>
             </CardContent>
@@ -166,13 +166,13 @@ export function Curso() {
 
       <Separator className="my-6" />
 
-      <h3 className="text-xl font-semibold mb-2">Evaluaciones por tema</h3>
+      <h3 className="text-xl font-semibold mb-2">Evaluaciones por subtema</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {agrupadoEvaluaciones.map(({ tema, cantidad, promedio }) => (
-          <Card key={tema.tema_id}>
+        {agrupadoEvaluaciones.map(({ subtema, cantidad, promedio }) => (
+          <Card key={subtema.subtema_id}>
             <CardHeader>
-              <CardTitle>{tema.nombre}</CardTitle>
+              <CardTitle>{subtema.nombre}</CardTitle>
             </CardHeader>
             <CardContent>
               <p><span className="font-medium">Evaluaciones:</span> {cantidad}</p>

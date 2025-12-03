@@ -26,7 +26,7 @@ function AsistenteEdit() {
   // Datos del asistente
   const [asistente, setAsistente] = useState<AsistenteOpenAI | null>(null)
   const [name, setName] = useState("")
-  const [baseInstructions, setBaseInstructions] = useState("") // prompt original
+  const [_baseInstructions, setBaseInstructions] = useState("") // prompt original
   const [instructions, setInstructions] = useState("")         // prompt editable
 
   const [loading, setLoading] = useState(false)
@@ -34,6 +34,11 @@ function AsistenteEdit() {
 
   // Fetch inicial
   useEffect(() => {
+    // si no hay asistenteId, o si es la string "null", no pegues al backend
+    if (!asistenteId || asistenteId === 'null') {
+      return
+    }
+
     setLoading(true)
     axios
       .get<AsistenteOpenAI>(`${apiUrl}/asistentes/${asistenteId}`, {
@@ -48,6 +53,7 @@ function AsistenteEdit() {
       .catch((err) => setError(`No se pudo cargar el asistente: ${err}`))
       .finally(() => setLoading(false))
   }, [apiUrl, asistenteId])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

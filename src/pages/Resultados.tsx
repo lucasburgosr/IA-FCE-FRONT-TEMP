@@ -59,10 +59,10 @@ export default function Resultados() {
     const map = new Map<number, { nombre: string; notas: number[] }>()
 
     evaluaciones.forEach((ev) => {
-      const sid = ev.tema.tema_id
+      const sid = ev.subtema.subtema_id
       let entry = map.get(sid)
       if (!entry) {
-        entry = { nombre: ev.tema.nombre, notas: [] }
+        entry = { nombre: ev.subtema.nombre, notas: [] }
         map.set(sid, entry)
       }
       entry.notas.push(ev.nota)

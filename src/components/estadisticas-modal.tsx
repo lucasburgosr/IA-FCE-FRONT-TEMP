@@ -25,7 +25,7 @@ import {
 import Alumno from "@/types/Alumno"
 
 // Nuevos tipos auxiliares
-type FiltroPregunta = "unidad" | "tema"
+type FiltroPregunta = "unidad" | "subtema"
 type Vista = "preguntas" | "evaluaciones"
 
 type Props = {
@@ -43,7 +43,7 @@ export function AlumnoStatsModal({ estudiante, open, onOpenChange }: Props) {
     const evaluaciones = estudiante.evaluaciones || []
 
     const agrupadasPreguntas = preguntas.reduce<Record<string, number>>((acc, p) => {
-        const key = filtro === "unidad" ? p.unidad.nombre : p.tema.nombre
+        const key = filtro === "unidad" ? p.unidad.nombre : p.subtema.nombre
         acc[key] = (acc[key] || 0) + 1
         return acc
     }, {})
@@ -52,7 +52,7 @@ export function AlumnoStatsModal({ estudiante, open, onOpenChange }: Props) {
         ? preguntas.filter(p =>
             filtro === "unidad"
                 ? p.unidad.nombre === seleccionado
-                : p.tema.nombre === seleccionado
+                : p.subtema.nombre === seleccionado
         )
         : []
 
@@ -92,7 +92,7 @@ export function AlumnoStatsModal({ estudiante, open, onOpenChange }: Props) {
                             </SelectTrigger>
                             <SelectContent className="bg-white">
                                 <SelectItem value="unidad">Por unidad</SelectItem>
-                                <SelectItem value="tema">Por tema</SelectItem>
+                                <SelectItem value="subtema">Por subtema</SelectItem>
                             </SelectContent>
                         </Select>
                     )}
@@ -103,7 +103,7 @@ export function AlumnoStatsModal({ estudiante, open, onOpenChange }: Props) {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>{filtro === "unidad" ? "Unidad" : "Tema"}</TableHead>
+                                    <TableHead>{filtro === "unidad" ? "Unidad" : "subtema"}</TableHead>
                                     <TableHead className="text-right">Preguntas</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -132,7 +132,7 @@ export function AlumnoStatsModal({ estudiante, open, onOpenChange }: Props) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Tema</TableHead>
+                                <TableHead>subtema</TableHead>
                                 <TableHead>Nota</TableHead>
                                 <TableHead>Fecha</TableHead>
                             </TableRow>
@@ -140,7 +140,7 @@ export function AlumnoStatsModal({ estudiante, open, onOpenChange }: Props) {
                         <TableBody>
                             {evaluaciones.map((ev, i) => (
                                 <TableRow key={i}>
-                                    <TableCell>{ev.tema.nombre}</TableCell>
+                                    <TableCell>{ev.subtema.nombre}</TableCell>
                                     <TableCell>{ev.nota}</TableCell>
                                     <TableCell>{new Date(ev.evaluacion_fecha).toLocaleDateString()}</TableCell>
                                 </TableRow>
