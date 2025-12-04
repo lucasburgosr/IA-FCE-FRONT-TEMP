@@ -143,36 +143,36 @@ export default function Home() {
   }, [localThreadId, asistenteId, apiUrl, axiosConfig])
 
   const handleCreateThread = useCallback(async () => {
-    if (!asistenteId) return
-    setCreatingThread(true)
+        if (!asistenteId) return
+        setCreatingThread(true)
 
-    try {
-      const res = await axios.post(
-        `${apiUrl}/threads/`,
-        { alumnoId, asistente_id: asistenteId },
-        axiosConfig
-      )
+        try {
+            const res = await axios.post(
+                `${apiUrl}/threads/`,
+                { alumnoId, asistente_id: asistenteId },
+                axiosConfig
+            )
 
-      console.log("POST /threads respuesta:", res.data)
+            console.log("POST /threads respuesta:", res.data)
 
-      if (Array.isArray(res.data?.messages)) {
-        setMessages(res.data.messages)
-      }
+            if (Array.isArray(res.data?.messages)) {
+                setMessages(res.data.messages)
+            }
 
-      // 👇 usar el campo correcto de la respuesta
-      const threadId = res.data?.thread_id ?? res.data?.id
+            const threadId = res.data?.thread_id ?? res.data?.id
 
-      if (threadId) {
-        setLocalThreadId(threadId)
-      } else {
-        console.warn("No se encontró threadId en la respuesta del backend")
-      }
-    } catch (err) {
-      console.error("No se pudo crear el thread:", err)
-    } finally {
-      setCreatingThread(false)
-    }
-  }, [alumnoId, asistenteId, apiUrl, axiosConfig])
+            if (threadId) {
+                setLocalThreadId(threadId)
+            } else {
+                console.warn("No se encontró threadId en la respuesta del backend")
+            }
+        } catch (err) {
+            console.error("No se pudo crear el thread:", err)
+        } finally {
+            setCreatingThread(false)
+        }
+    }, [alumnoId, asistenteId, apiUrl, axiosConfig])
+
 
 
   const handlePollingSuccess = useCallback(async () => {
